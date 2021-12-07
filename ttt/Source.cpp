@@ -12,7 +12,7 @@ HANDLE hout;
 COORD c = { 33,7 };
 CONSOLE_CURSOR_INFO ci;
 int field[13][13];
-int game[3][3] = {0};
+int game[3][3] = { 0 };
 int hod = 1;
 
 int curX = 0;
@@ -22,19 +22,19 @@ bool flag1 = true;
 int winner = 0;
 int counter = 0;
 int x;
-void Bot() 
+void Bot()
 {
-	
+
 	cout << "Bot" << endl;
 
 }
 void Player() {
 	COORD move[3][3] = { {{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}} };
-	
-	
+
+
 	SetConsoleCursorPosition(hout, move[curX][curY]);
 	x = _getch();
-	
+
 	switch (x)
 	{
 	case 75:
@@ -88,10 +88,10 @@ void Player() {
 		}
 		break;
 	}
- }
+}
 void Game()
 {
-	
+
 	while (flag)
 	{
 		Player();
@@ -105,16 +105,16 @@ void Game()
 }
 
 
-void Check() 
+void Check()
 {
 	if (game[0][0] == game[0][1] && game[0][0] == game[0][2]) //первая горизонталь
 	{
-		if (game[0][0] == 1) 
+		if (game[0][0] == 1)
 		{
 			flag = 0;
 			winner = 1;
 		}
-		else if (game[0][0] == 2) 
+		else if (game[0][0] == 2)
 		{
 			flag = 0;
 			winner = 2;
@@ -122,12 +122,12 @@ void Check()
 	}
 	if (game[1][0] == game[1][1] && game[1][1] == game[1][2]) //вторая горизонталь
 	{
-		if (game[1][0] == 1) 
+		if (game[1][0] == 1)
 		{
 			flag = 0;
 			winner = 1;
 		}
-		else if (game[1][0] == 2) 
+		else if (game[1][0] == 2)
 		{
 			flag = 0;
 			winner = 2;
@@ -135,12 +135,12 @@ void Check()
 	}
 	if (game[2][0] == game[2][1] && game[2][1] == game[2][2] && game[2][0] == game[2][2]) //третья горизонталь
 	{
-		if (game[2][0] == 1) 
+		if (game[2][0] == 1)
 		{
 			flag = 0;
 			winner = 1;
 		}
-		else if (game[2][0] == 2) 
+		else if (game[2][0] == 2)
 		{
 			flag = 0;
 			winner = 2;
@@ -148,12 +148,12 @@ void Check()
 	}
 	if (game[0][0] == game[1][0] && game[1][0] == game[2][0] && game[0][0] == game[2][0]) //первая вертикаль
 	{
-		if (game[0][0] == 1) 
+		if (game[0][0] == 1)
 		{
 			flag = 0;
 			winner = 1;
 		}
-		else if (game[0][0] == 2) 
+		else if (game[0][0] == 2)
 		{
 			flag = 0;
 			winner = 2;
@@ -161,12 +161,12 @@ void Check()
 	}
 	if (game[0][1] == game[1][1] && game[1][1] == game[2][1] && game[0][1] == game[2][1]) //вторая вертикаль
 	{
-		if (game[0][1] == 1) 
+		if (game[0][1] == 1)
 		{
 			flag = 0;
 			winner = 1;
 		}
-		else if (game[0][1] == 2) 
+		else if (game[0][1] == 2)
 		{
 			flag = 0;
 			winner = 2;
@@ -174,12 +174,12 @@ void Check()
 	}
 	if (game[0][2] == game[1][2] && game[1][2] == game[2][2] && game[0][2] == game[2][2]) //третья вертикаль
 	{
-		if (game[0][2] == 1) 
+		if (game[0][2] == 1)
 		{
 			flag = 0;
 			winner = 1;
 		}
-		else if (game[0][2] == 2) 
+		else if (game[0][2] == 2)
 		{
 			flag = 0;
 			winner = 2;
@@ -187,12 +187,12 @@ void Check()
 	}
 	if (game[0][0] == game[1][1] && game[1][1] == game[2][2] && game[0][0] == game[2][2]) //диагональ слева на право
 	{
-		if (game[0][0] == 1) 
+		if (game[0][0] == 1)
 		{
 			flag = 0;
 			winner = 1;
 		}
-		else if (game[0][0] == 2) 
+		else if (game[0][0] == 2)
 		{
 			flag = 0;
 			winner = 2;
@@ -200,12 +200,12 @@ void Check()
 	}
 	if (game[2][0] == game[1][1] && game[1][1] == game[2][0] && game[0][2] == game[2][0]) //диагональ справа на лево
 	{
-		if (game[2][0] == 1) 
+		if (game[2][0] == 1)
 		{
 			flag = 0;
 			winner = 1;
 		}
-		else if (game[2][0] == 2) 
+		else if (game[2][0] == 2)
 		{
 			flag = 0;
 			winner = 2;
@@ -216,7 +216,7 @@ void Check()
 			if (game[i][j] != 0) counter++;
 	if (counter == 9) flag = 0;
 	counter = 0;*/
-	
+
 }
 
 void Draw()
@@ -226,7 +226,7 @@ void Draw()
 		SetConsoleCursorPosition(hout, c);
 		for (int j = 0; j < 13; j++)
 		{
-			cout <<(char)field[i][j];
+			cout << (char)field[i][j];
 		}
 		c.Y++;
 	}
@@ -267,8 +267,8 @@ int main()
 	SetConsoleCursorPosition(hout, { 35,9 });
 	int x = _getch();
 	Game();
-	
-	
+
+
 	cout << "\n\n" << endl;
 	system("pause");
 }
