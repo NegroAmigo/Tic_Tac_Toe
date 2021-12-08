@@ -21,13 +21,22 @@ bool flag;
 int winner = 0;
 int x;
 int turn_counter = 0;
-int mode = 1;
+int mode;
 
 void Menu() {
-
-	x = _getch();
-
-
+	cout << "Press 1 for play with computer.\nPress 2 for game with player.\nPress 3 for exit.";
+	while (true) {
+		x = _getch();
+		if (x == 49) mode = 0;
+		else if (x == 50) mode = 1;
+		else if (x == 51) exit(0);
+		else if (x == 102) { SetConsoleCursorPosition(hout, { 50,10 });  cout << "RESPECT\n\n\n\n\n\n\n"; exit(0); }
+		system("cls");
+		Create_field();
+		ci.bVisible = true;
+		SetConsoleCursorInfo(hout, &ci);
+		Game();
+	}
 }
 
 void Bot_turn(int priority) 
@@ -284,6 +293,8 @@ void Draw()
 
 void Create_field() 
 {
+	
+	SetConsoleCursorPosition(hout, c);
 	for (int i = 0; i < 13; i++)
 	{
 		for (int j = 0; j < 13; j++) 
@@ -310,11 +321,13 @@ int main()
 {
 	hout = GetStdHandle(STD_OUTPUT_HANDLE);
 	ci.dwSize = 100;
-	ci.bVisible = true;
+	ci.bVisible = false;
 	SetConsoleCursorInfo(hout, &ci);
-	SetConsoleCursorPosition(hout, c);
-	Create_field();
-	Game();
+	
+	
+	Menu();
+	
 	cout << "\n\n" << endl;
 	system("pause");
+	return 0;
 }
