@@ -1,4 +1,6 @@
-﻿#include "Header.h"
+﻿// tic_tac_toe.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+#include "Header.h"
 #include <conio.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -20,17 +22,19 @@ int winner = 0;
 int x;
 int turn_counter = 0;
 
-void Bot_turn(int priority) 
-{
-	COORD move[3][3] = { {{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}} };
-	for (int i = 0; i < 3; i++) 
-	{
-		if ((game[0][i] == priority && game[1][i] == priority) || (game[1][i] == priority && game[2][i] == priority) || (game[0][i] == priority && game[2][i] == priority)) 
-		{
-			for (int j = 0; j < 3; j++) 
-			{
-				if (game[j][i] == 0) 
-				{
+void Bot_turn(int priority) {
+	COORD move[3][3] = {{{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}}};
+	if (game[1][1] == 0) {
+		game[1][1] = 2;
+		SetConsoleCursorPosition(hout, move[1][1]);
+		cout << "O";
+		turn_counter++;
+		return;
+	}
+	for (int i = 0; i < 3; i++) {
+		if ((game[0][i] == priority && game[1][i] == priority) || (game[1][i] == priority && game[2][i] == priority) || (game[0][i] == priority && game[2][i] == priority)) {
+			for (int j = 0; j < 3; j++) {
+				if (game[j][i] == 0) {
 					game[j][i] = 2;
 					SetConsoleCursorPosition(hout, move[j][i]);
 					cout << "O";
@@ -40,55 +44,11 @@ void Bot_turn(int priority)
 			}
 		}
 	}
-	for (int i = 0; i < 3; i++) 
+
+	for (int i = 0; i < 3; i++)
 	{
-		if ((game[i][0] == priority && game[i][1] == priority) || (game[i][1] == priority && game[i][2] == priority) || (game[i][0] == priority && game[i][2] == priority)) 
+		if ((game[i][0] == priority && game[i][1] == priority) || (game[i][1] == priority && game[i][2] == priority) || (game[i][0] == priority && game[i][2] == priority))
 		{
-			for (int j = 0; j < 3; j++) 
-			{
-				if (game[i][j] == 0) 
-				{
-					game[i][j] = 2;
-					SetConsoleCursorPosition(hout, move[i][j]);
-					cout << "O";
-					turn_counter++;
-					return;
-				}
-			}
-		}
-	}
-	if ((game[0][0] == priority && game[1][1] == priority) || (game[1][1] == priority && game[2][2] == priority) || (game[0][0] == priority && game[2][2] == priority)) 
-	{
-		for (int j = 0; j < 3; j++) 
-		{
-			if (game[j][j] == 0) 
-			{
-				game[j][j] = 2;
-				SetConsoleCursorPosition(hout, move[j][j]);
-				cout << "O";
-				turn_counter++;
-				return;
-			}
-		}
-	}
-	if ((game[2][0] == priority && game[1][1] == priority) || (game[1][1] == priority && game[0][2] == priority) || (game[0][2] == priority && game[2][0] == priority)) 
-	{
-		for (int j = 0; j < 3; j++) 
-		{
-			if (game[j][2 - j] == 0) 
-			{
-				game[j][2 - j] = 2;
-				SetConsoleCursorPosition(hout, move[j][2 - j]);
-				cout << "O";
-				turn_counter++;
-				return;
-			}
-		}
-	}
-	if (priority == 2) Bot_turn(1);
-	else
-	{
-		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
 			{
 				if (game[i][j] == 0)
@@ -100,18 +60,66 @@ void Bot_turn(int priority)
 					return;
 				}
 			}
+		}
+	}
+
+	if ((game[0][0] == priority && game[1][1] == priority) || (game[1][1] == priority && game[2][2] == priority) || (game[0][0] == priority && game[2][2] == priority))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (game[i][i] == 0)
+			{
+				game[i][i] = 2;
+				SetConsoleCursorPosition(hout, move[i][i]);
+				cout << "0";
+				counter++;
+				return;
+			}
+		}
 	}
 		
+	if ( game[0][2] == game[1][1] == priority || game[1][1] == game[2][0] == priority || game[0][2] == game[2][0] == priority)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (game[i][i] == 0)
+			{
+				game[i][i] = 2;
+				SetConsoleCursorPosition(hout, move[i][i]);
+				cout << "0";
+				counter++;
+				return;
+			}
+		}
+	}
+	if (priority == 2) Bot_turn(1);
+	else
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (game[i][j] == 0)
+				{
+					game[i][j] = 2;
+					SetConsoleCursorPosition(hout, move[i][j]);
+					cout << "O";
+					turn_counter++;
+					return;
+				}
+			}
+		}
+	}
 }
 
-void Player_turn() 
-{
+void Player() {
 	COORD move[3][3] = { {{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}} };
-	while (true) 
+
+	
+	while (true)
 	{
 		SetConsoleCursorPosition(hout, move[curX][curY]);
 		x = _getch();
-		switch (x) 
+		switch (x)
 		{
 		case 75:
 			if (curY - 1 >= 0 && curY - 1 <= 2) curY--;
@@ -126,12 +134,12 @@ void Player_turn()
 			if (curX - 1 >= 0 && curX - 1 <= 2) curX--;
 			break;
 		case 32:
-			if (game[curX][curY] != 0) 
+			if (game[curX][curY] != 0)
 			{
-				SetConsoleCursorPosition(hout, inf_out);
-				cout << "Wrong move!";
+				SetConsoleCursorPosition(hout, { 0,20 });
+				cout << "That cage has been reserved!";
 			}
-			else 
+			else
 			{
 				cout << "X";
 				game[curX][curY] = 1;
@@ -142,15 +150,13 @@ void Player_turn()
 		}
 	}
 }
-
-void Game() 
+void Game()
 {
-	SetConsoleCursorPosition(hout, { 35,9 });
-	flag = true;
+	SetConsoleCursorPosition(hout, { 35, 9});
 	int x = _getch();
-	while (flag) 
+	while (flag)
 	{
-		Player_turn();
+		Player();
 		Check();
 		if (flag == 0) break;
 		Bot_turn(2);
@@ -166,81 +172,73 @@ void Game()
 	SetConsoleCursorInfo(hout, &ci);
 }
 
-void Check() 
+void Check()
 {
-	for (int i = 0; i < 3; i++) 
+	for (int i = 0; i < 3; i++)
 	{
-		if (game[0][i] == game[1][i] && game[1][i] == game[2][i]) 
+		if (game[i][0] == game[i][1] && game[i][0] == game[i][2])
 		{
-			if (game[0][i] != 0 && game[1][i] != 0 && game[2][i] != 0) 
+			if (game[i][0] == 1)
 			{
-				if (game[0][i] == 1) winner = 1;
-				else if (game[0][i] == 2) winner = 2;
+				flag = 0;
+				winner = 1;
+			}
+			else if (game[i][0] == 2)
+			{
 				flag = 0;
 				break;
 			}
 		}
 	}
-	for (int i = 0; i < 3; i++) 
+	
+	for (int j = 0; j < 3; j++)
 	{
-		if (game[i][0] == game[i][1] && game[i][1] == game[i][2]) 
+		if (game[0][j] == game[1][j] && game[0][j] == game[2][j])
 		{
-			if (game[i][0] != 0 && game[i][1] != 0 && game[i][2] != 0) 
+			if (game[0][j] == 1)
 			{
-				if (game[i][0] == 1) winner = 1;
-				else if (game[i][0] == 2) winner = 2;
 				flag = 0;
-				break;
+				winner = 1;
+			}
+			else if (game[0][j] == 2)
+			{
+				flag = 0;
+				winner = 2;
 			}
 		}
 	}
-	if (game[0][0] == game[1][1] && game[1][1] == game[2][2]) //диагональ слева на право
+	
+	if (game[0][0] == game[1][1] && game[1][1] == game[2][2] && game[0][0] == game[2][2]) //диагональ слева на право
 	{
-		if (game[0][0] == 1) 
+		if (game[0][0] == 1)
 		{
-			winner = 1;
 			flag = 0;
 		}
-		else if (game[0][0] == 2) 
+		else if (game[0][0] == 2)
 		{
-			winner = 2;
 			flag = 0;
 		}
 	}
-	if (game[2][0] == game[1][1] && game[1][1] == game[0][2]) //диагональ справа на лево
+	if (game[2][0] == game[1][1] && game[1][1] == game[2][0] && game[0][2] == game[2][0]) //диагональ справа на лево
 	{
-		if (game[2][0] == 1) 
+		if (game[2][0] == 1)
 		{
+			flag = 0;
 			winner = 1;
-			flag = 0;
 		}
-		else if (game[2][0] == 2) 
+		else if (game[2][0] == 2)
 		{
-			winner = 2;
 			flag = 0;
-		}
-	}
-	if (turn_counter == 9) flag = 0;
-}
-
-void Draw() 
-{
-	for (int i = 0; i < 13; i++) 
-	{
-		SetConsoleCursorPosition(hout, c);
-		for (int j = 0; j < 13; j++) {
-			cout << (char)field[i][j];
+			winner = 2;
 		}
 		c.Y++;
 	}
 }
 
-void Create_field() 
+void Draw_Field()
 {
 	for (int i = 0; i < 13; i++)
-	{
-		for (int j = 0; j < 13; j++)
-		{
+		for (int j = 0; j < 13; j++) {
 			if (i == 0 && j % 4 == 0) field[i][j] = 203; // ╦
 			else if (i == 12 && j % 4 == 0) field[i][j] = 202; // ╩
 			else if (i % 4 == 0 && j % 4 != 0) field[i][j] = 205; // ═
@@ -250,16 +248,24 @@ void Create_field()
 			else if (i % 4 == 0 && j == 12) field[i][j] = 185; // ╣
 			else if (i % 4 != 0 && j % 4 != 0) field[i][j] = 255; //space
 		}
+		field[0][0] = 201; // ╔
+		field[0][12] = 187; // ╗
+		field[12][0] = 200; // ╚
+		field[12][12] = 188; // ╝
 	}
-		
-	field[0][0] = 201; // ╔
-	field[0][12] = 187; // ╗
-	field[12][0] = 200; // ╚
-	field[12][12] = 188; // ╝
-	Draw();
+
+	for (int i = 0; i < 13; i++)
+	{
+		SetConsoleCursorPosition(hout, c);
+		for (int j = 0; j < 13; j++)
+		{
+			cout << (char)field[i][j];
+		}
+		c.Y++;
+	}
 }
 
-int main() 
+int main()
 {
 	hout = GetStdHandle(STD_OUTPUT_HANDLE);
 	ci.dwSize = 100;
