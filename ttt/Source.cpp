@@ -13,88 +13,179 @@ COORD c = { 33,7 };
 CONSOLE_CURSOR_INFO ci;
 int field[13][13];
 int game[3][3] = { 0 };
-int hod = 1;
 
 int curX = 0;
 int curY = 0;
 bool flag = true;
-bool flag1 = true;
 int winner = 0;
 int counter = 0;
 int x;
-void Bot()
+
+void Bot(int priority)
 {
+	COORD move[3][3] = { {{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}} };
 
-	cout << "Bot" << endl;
+	for (int i = 0; i < 3; i++)
+	{
+		if ((game[0][i] == priority && game[1][i] == priority) || (game[1][i] == priority && game[2][i] == priority) || (game[0][i] == priority && game[2][i] == priority))
+		//game[0][i]==game[1][i]==priority || game[1][i]==game[2][i]==priority || game[0][i]==game[2][i]==priority
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (game[j][i]==0)
+				{
+					game[j][i] == 2;
+					SetConsoleCursorPosition(hout, move[j][i]);
+					cout << "O";
+					counter++;
+					return;
+				}
+			}
+		}
+	}
 
+	for (int i = 0; i < 3; i++)
+	{
+		if ((game[i][0] == priority && game[i][1] == priority) || (game[i][1] == priority && game[i][2] == priority) || (game[i][0] == priority && game[i][2] == priority))
+		//game[i][0] == game[i][1] == priority || game[i][1] == game[i][2] == priority || game[i][0] == game[i][2] == priority
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (game[i][j] == 0)
+				{
+					game[i][j] == 2;
+					SetConsoleCursorPosition(hout, move[i][j]);
+					cout << "O";
+					counter++;
+					return;
+				}
+			}
+		}
+	}
+
+	if ((game[0][0] == priority && game[1][1] == priority) || (game[1][1] == priority && game[2][2] == priority) || (game[0][0] == priority && game[2][2] == priority))
+	//game[0][0] == game[1][1] == priority || game[1][1] == game[2][2] == priority || game[0][0] == game[2][2] == priority
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (game[i][i] == 0)
+			{
+				game[i][i] = 2;
+				SetConsoleCursorPosition(hout, move[i][i]);
+				cout << "0";
+				counter++;
+				return;
+			}
+		}
+	}
+		
+	if ((game[2][0] == priority && game[1][1] == priority) || (game[1][1] == priority && game[0][2] == priority) || (game[0][2] == priority && game[2][0] == priority))
+	//game[0][2] == game[1][1] == priority || game[1][1] == game[2][0] == priority || game[0][2] == game[2][0] == priority
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (game[i][i] == 0)
+			{
+				game[i][i] = 2;
+				SetConsoleCursorPosition(hout, move[i][i]);
+				cout << "0";
+				counter++;
+				return;
+			}
+		}
+	}
+
+	if (priority == 2) Bot(1);
+	else
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (game[i][j] == 0)
+				{
+					game[i][j] = 2;
+					SetConsoleCursorPosition(hout, move[i][j]);
+					cout << "O";
+					counter++;
+					return;
+				}
+			}
+		}
+	}
 }
+
 void Player() {
 	COORD move[3][3] = { {{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}} };
 
-
-	SetConsoleCursorPosition(hout, move[curX][curY]);
-	x = _getch();
-
-	switch (x)
+	
+	while (true)
 	{
-	case 75:
-		if (curY >= 0 && curY <= 2) {
-			if (curY - 1 >= 0 && curY - 1 <= 2)
-			{
-				curY--;
-				SetConsoleCursorPosition(hout, move[curY][curX]);
-			}
-		}
-		break;
-	case 77:
-		if (curY >= 0 && curY <= 2)
-			if (curY + 1 >= 0 && curY + 1 <= 2)
-			{
-				curY++;
-				SetConsoleCursorPosition(hout, move[curY][curX]);
-			}
-		break;
-	case 80:
-		if (curX >= 0 && curX <= 2)
-			if (curX + 1 >= 0 && curX + 1 <= 2)
-			{
-				curX++;
-				SetConsoleCursorPosition(hout, move[curY][curX]);
-			}
-		break;
-	case 72:
-		if (curX >= 0 && curX <= 2)
-			if (curX - 1 >= 0 && curX - 1 <= 2)
-			{
-				curX--;
-				SetConsoleCursorPosition(hout, move[curY][curX]);
-			}
-		break;
-	case 32:
-		if (game[curX][curY] != 0)
+		SetConsoleCursorPosition(hout, move[curX][curY]);
+		x = _getch();
+		switch (x)
 		{
-			SetConsoleCursorPosition(hout, { 0,20 });
-			cout << "Fuck you leatherman!";
+		case 75:
+			if (curY >= 0 && curY <= 2) {
+				if (curY - 1 >= 0 && curY - 1 <= 2)
+				{
+					curY--;
+					SetConsoleCursorPosition(hout, move[curY][curX]);
+				}
+			}
+			break;
+		case 77:
+			if (curY >= 0 && curY <= 2)
+				if (curY + 1 >= 0 && curY + 1 <= 2)
+				{
+					curY++;
+					SetConsoleCursorPosition(hout, move[curY][curX]);
+				}
+			break;
+		case 80:
+			if (curX >= 0 && curX <= 2)
+				if (curX + 1 >= 0 && curX + 1 <= 2)
+				{
+					curX++;
+					SetConsoleCursorPosition(hout, move[curY][curX]);
+				}
+			break;
+		case 72:
+			if (curX >= 0 && curX <= 2)
+				if (curX - 1 >= 0 && curX - 1 <= 2)
+				{
+					curX--;
+					SetConsoleCursorPosition(hout, move[curY][curX]);
+				}
+			break;
+		case 32:
+			if (game[curX][curY] != 0)
+			{
+				SetConsoleCursorPosition(hout, { 0,20 });
+				cout << "That cage has been reserved!";
+			}
+			else
+			{
+				cout << "X";
+				SetConsoleCursorPosition(hout, move[curY][curX]);
+				game[curX][curY] = 1;
+				counter++;
+				return;
+			}
+			break;
 		}
-		else
-		{
-			cout << "X";
-			SetConsoleCursorPosition(hout, move[curY][curX]);
-			game[curX][curY] = 1;
-			hod = 2;
-			Check();
-			SetConsoleCursorPosition(hout, { 0,22 });
-			Bot();
-		}
-		break;
 	}
 }
 void Game()
 {
-
+	SetConsoleCursorPosition(hout, { 35, 9});
 	while (flag)
 	{
 		Player();
+		Check();
+		//if (flag == false) break;
+		Bot(2);
+		Check();
 	}
 
 	SetConsoleCursorPosition(hout, { 0,20 });
@@ -107,84 +198,40 @@ void Game()
 
 void Check()
 {
-	if (game[0][0] == game[0][1] && game[0][0] == game[0][2]) //первая горизонталь
+	for (int i = 0; i < 3; i++)
 	{
-		if (game[0][0] == 1)
+		if (game[i][0] == game[i][1] && game[i][0] == game[i][2])
 		{
-			flag = 0;
-			winner = 1;
-		}
-		else if (game[0][0] == 2)
-		{
-			flag = 0;
-			winner = 2;
+			if (game[i][0] == 1)
+			{
+				flag = 0;
+				winner = 1;
+			}
+			else if (game[i][0] == 2)
+			{
+				flag = 0;
+				winner = 2;
+			}
 		}
 	}
-	if (game[1][0] == game[1][1] && game[1][1] == game[1][2]) //вторая горизонталь
+	
+	for (int j = 0; j < 3; j++)
 	{
-		if (game[1][0] == 1)
+		if (game[0][j] == game[1][j] && game[0][j] == game[2][j])
 		{
-			flag = 0;
-			winner = 1;
-		}
-		else if (game[1][0] == 2)
-		{
-			flag = 0;
-			winner = 2;
+			if (game[0][j] == 1)
+			{
+				flag = 0;
+				winner = 1;
+			}
+			else if (game[0][j] == 2)
+			{
+				flag = 0;
+				winner = 2;
+			}
 		}
 	}
-	if (game[2][0] == game[2][1] && game[2][1] == game[2][2] && game[2][0] == game[2][2]) //третья горизонталь
-	{
-		if (game[2][0] == 1)
-		{
-			flag = 0;
-			winner = 1;
-		}
-		else if (game[2][0] == 2)
-		{
-			flag = 0;
-			winner = 2;
-		}
-	}
-	if (game[0][0] == game[1][0] && game[1][0] == game[2][0] && game[0][0] == game[2][0]) //первая вертикаль
-	{
-		if (game[0][0] == 1)
-		{
-			flag = 0;
-			winner = 1;
-		}
-		else if (game[0][0] == 2)
-		{
-			flag = 0;
-			winner = 2;
-		}
-	}
-	if (game[0][1] == game[1][1] && game[1][1] == game[2][1] && game[0][1] == game[2][1]) //вторая вертикаль
-	{
-		if (game[0][1] == 1)
-		{
-			flag = 0;
-			winner = 1;
-		}
-		else if (game[0][1] == 2)
-		{
-			flag = 0;
-			winner = 2;
-		}
-	}
-	if (game[0][2] == game[1][2] && game[1][2] == game[2][2] && game[0][2] == game[2][2]) //третья вертикаль
-	{
-		if (game[0][2] == 1)
-		{
-			flag = 0;
-			winner = 1;
-		}
-		else if (game[0][2] == 2)
-		{
-			flag = 0;
-			winner = 2;
-		}
-	}
+	
 	if (game[0][0] == game[1][1] && game[1][1] == game[2][2] && game[0][0] == game[2][2]) //диагональ слева на право
 	{
 		if (game[0][0] == 1)
@@ -211,12 +258,6 @@ void Check()
 			winner = 2;
 		}
 	}
-	/*for(int i = 0; i<3; i++)
-		for(int j = 0; j<3; j++)
-			if (game[i][j] != 0) counter++;
-	if (counter == 9) flag = 0;
-	counter = 0;*/
-
 }
 
 void Draw()
@@ -267,7 +308,6 @@ int main()
 	SetConsoleCursorPosition(hout, { 35,9 });
 	int x = _getch();
 	Game();
-
 
 	cout << "\n\n" << endl;
 	system("pause");
