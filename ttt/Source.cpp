@@ -14,13 +14,21 @@ COORD c = { 33,7 };
 COORD inf_out = { 0,21 };
 CONSOLE_CURSOR_INFO ci;
 int field[13][13];
-int game[3][3] = { 0 };
+int game[3][3] = {0};
 int curX = 0;
 int curY = 0;
 bool flag;
 int winner = 0;
 int x;
 int turn_counter = 0;
+int mode = 1;
+
+void Menu() {
+
+	x = _getch();
+
+
+}
 
 void Bot_turn(int priority) 
 {
@@ -112,7 +120,6 @@ void Bot_turn(int priority)
 	}
 }	
 
-
 void Player_turn() 
 {
 	COORD move[3][3] = { {{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}} };
@@ -135,12 +142,30 @@ void Player_turn()
 			if (curX - 1 >= 0 && curX - 1 <= 2) curX--;
 			break;
 		case 32:
-			if (game[curX][curY] != 0) 
+			if (game[curX][curY] != 0)
 			{
 				SetConsoleCursorPosition(hout, inf_out);
 				cout << "Wrong move!";
 			}
-			else 
+			else if (mode == 1) {
+				if (turn_counter % 2 == 0) {
+					cout << "X";
+					game[curX][curY] = 1;
+					turn_counter++;
+					SetConsoleCursorPosition(hout, { 33, 6 });
+					cout << "Move 2 player";
+					return;
+				}
+				else if (turn_counter % 2 != 0) {
+					cout << "O";
+					game[curX][curY] = 2;
+					turn_counter++;
+					SetConsoleCursorPosition(hout, { 33, 6 });
+					cout << "Move 1 player";
+					return;
+				}
+			}
+			else
 			{
 				cout << "X";
 				game[curX][curY] = 1;
@@ -162,14 +187,27 @@ void Game()
 		Player_turn();
 		Check();
 		if (flag == 0) break;
-		Bot_turn(2);
-		Check();
+		if (mode == 0) {
+			Bot_turn(2);
+			Check();
+		}	
 	}
 	SetConsoleCursorPosition(hout, inf_out);
 	cout << "                ";
-	SetConsoleCursorPosition(hout, inf_out);
-	if (winner == 1) cout << "Player win!";
-	else if (winner == 2) cout << "Computer win!";
+	if (winner == 1) {
+		SetConsoleCursorPosition(hout, { 33, 6 });
+		cout << "                ";
+		SetConsoleCursorPosition(hout, inf_out);
+		if(mode==0) cout << "Player win!";
+		if (mode == 1) cout << "Player 1 win!";
+	}
+	else if (winner == 2) {
+		SetConsoleCursorPosition(hout, { 33, 6 });
+		cout << "                ";
+		SetConsoleCursorPosition(hout, inf_out);
+		if (mode == 0) cout << "Computer win!";
+		if (mode == 1) cout << "Player 2 win!";
+	}
 	else cout << "Tie!";
 	ci.bVisible = false;
 	SetConsoleCursorInfo(hout, &ci);
