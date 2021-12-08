@@ -23,7 +23,14 @@ int x;
 int turn_counter = 0;
 
 void Bot_turn(int priority) {
-	COORD move[3][3] = { {{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}} };
+	COORD move[3][3] = {{{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}}};
+	if (game[1][1] == 0) {
+		game[1][1] = 2;
+		SetConsoleCursorPosition(hout, move[1][1]);
+		cout << "O";
+		turn_counter++;
+		return;
+	}
 	for (int i = 0; i < 3; i++) {
 		if ((game[0][i] == priority && game[1][i] == priority) || (game[1][i] == priority && game[2][i] == priority) || (game[0][i] == priority && game[2][i] == priority)) {
 			for (int j = 0; j < 3; j++) {
