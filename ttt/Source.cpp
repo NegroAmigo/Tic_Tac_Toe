@@ -1,6 +1,4 @@
-﻿// tic_tac_toe.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-#include "Header.h"
+﻿#include "Header.h"
 #include <conio.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -28,13 +26,12 @@ void Bot(int priority)
 	for (int i = 0; i < 3; i++)
 	{
 		if ((game[0][i] == priority && game[1][i] == priority) || (game[1][i] == priority && game[2][i] == priority) || (game[0][i] == priority && game[2][i] == priority))
-		//game[0][i]==game[1][i]==priority || game[1][i]==game[2][i]==priority || game[0][i]==game[2][i]==priority
 		{
 			for (int j = 0; j < 3; j++)
 			{
 				if (game[j][i]==0)
 				{
-					game[j][i] == 2;
+					game[j][i] = 2;
 					SetConsoleCursorPosition(hout, move[j][i]);
 					cout << "O";
 					counter++;
@@ -47,13 +44,12 @@ void Bot(int priority)
 	for (int i = 0; i < 3; i++)
 	{
 		if ((game[i][0] == priority && game[i][1] == priority) || (game[i][1] == priority && game[i][2] == priority) || (game[i][0] == priority && game[i][2] == priority))
-		//game[i][0] == game[i][1] == priority || game[i][1] == game[i][2] == priority || game[i][0] == game[i][2] == priority
 		{
 			for (int j = 0; j < 3; j++)
 			{
 				if (game[i][j] == 0)
 				{
-					game[i][j] == 2;
+					game[i][j] = 2;
 					SetConsoleCursorPosition(hout, move[i][j]);
 					cout << "O";
 					counter++;
@@ -64,7 +60,6 @@ void Bot(int priority)
 	}
 
 	if ((game[0][0] == priority && game[1][1] == priority) || (game[1][1] == priority && game[2][2] == priority) || (game[0][0] == priority && game[2][2] == priority))
-	//game[0][0] == game[1][1] == priority || game[1][1] == game[2][2] == priority || game[0][0] == game[2][2] == priority
 	{
 		for (int i = 0; i < 3; i++)
 		{
@@ -79,8 +74,7 @@ void Bot(int priority)
 		}
 	}
 		
-	if ((game[2][0] == priority && game[1][1] == priority) || (game[1][1] == priority && game[0][2] == priority) || (game[0][2] == priority && game[2][0] == priority))
-	//game[0][2] == game[1][1] == priority || game[1][1] == game[2][0] == priority || game[0][2] == game[2][0] == priority
+	if ( game[0][2] == game[1][1] == priority || game[1][1] == game[2][0] == priority || game[0][2] == game[2][0] == priority)
 	{
 		for (int i = 0; i < 3; i++)
 		{
@@ -126,37 +120,16 @@ void Player() {
 		switch (x)
 		{
 		case 75:
-			if (curY >= 0 && curY <= 2) {
-				if (curY - 1 >= 0 && curY - 1 <= 2)
-				{
-					curY--;
-					SetConsoleCursorPosition(hout, move[curY][curX]);
-				}
-			}
+			if (curY - 1 >= 0 && curY - 1 <= 2) curY--;
 			break;
 		case 77:
-			if (curY >= 0 && curY <= 2)
-				if (curY + 1 >= 0 && curY + 1 <= 2)
-				{
-					curY++;
-					SetConsoleCursorPosition(hout, move[curY][curX]);
-				}
+			if (curY + 1 >= 0 && curY + 1 <= 2) curY++;
 			break;
 		case 80:
-			if (curX >= 0 && curX <= 2)
-				if (curX + 1 >= 0 && curX + 1 <= 2)
-				{
-					curX++;
-					SetConsoleCursorPosition(hout, move[curY][curX]);
-				}
+			if (curX + 1 >= 0 && curX + 1 <= 2) curX++;
 			break;
 		case 72:
-			if (curX >= 0 && curX <= 2)
-				if (curX - 1 >= 0 && curX - 1 <= 2)
-				{
-					curX--;
-					SetConsoleCursorPosition(hout, move[curY][curX]);
-				}
+			if (curX - 1 >= 0 && curX - 1 <= 2) curX--;
 			break;
 		case 32:
 			if (game[curX][curY] != 0)
@@ -167,7 +140,6 @@ void Player() {
 			else
 			{
 				cout << "X";
-				SetConsoleCursorPosition(hout, move[curY][curX]);
 				game[curX][curY] = 1;
 				counter++;
 				return;
@@ -179,11 +151,12 @@ void Player() {
 void Game()
 {
 	SetConsoleCursorPosition(hout, { 35, 9});
+	int x = _getch();
 	while (flag)
 	{
 		Player();
 		Check();
-		//if (flag == false) break;
+		if (counter >= 9 || flag == false) break;
 		Bot(2);
 		Check();
 	}
@@ -193,8 +166,8 @@ void Game()
 	SetConsoleCursorPosition(hout, { 0,20 });
 	if (winner == 1) cout << "Player win!";
 	else if (winner == 2) cout << "Comp win!";
+	else if (counter>=9) cout << "Tie!";
 }
-
 
 void Check()
 {
@@ -260,20 +233,7 @@ void Check()
 	}
 }
 
-void Draw()
-{
-	for (int i = 0; i < 13; i++)
-	{
-		SetConsoleCursorPosition(hout, c);
-		for (int j = 0; j < 13; j++)
-		{
-			cout << (char)field[i][j];
-		}
-		c.Y++;
-	}
-}
-
-void Field()
+void Draw_Field()
 {
 	for (int i = 0; i < 13; i++)
 	{
@@ -293,7 +253,16 @@ void Field()
 		field[12][0] = 200; // ╚
 		field[12][12] = 188; // ╝
 	}
-	Draw();
+
+	for (int i = 0; i < 13; i++)
+	{
+		SetConsoleCursorPosition(hout, c);
+		for (int j = 0; j < 13; j++)
+		{
+			cout << (char)field[i][j];
+		}
+		c.Y++;
+	}
 }
 
 int main()
@@ -303,10 +272,8 @@ int main()
 	ci.bVisible = true;
 	SetConsoleCursorInfo(hout, &ci);
 	SetConsoleCursorPosition(hout, c);
-	Field();
-
+	Draw_Field();
 	SetConsoleCursorPosition(hout, { 35,9 });
-	int x = _getch();
 	Game();
 
 	cout << "\n\n" << endl;
