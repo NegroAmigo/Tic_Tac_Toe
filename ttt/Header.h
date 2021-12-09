@@ -1,5 +1,7 @@
 #pragma once
 
+void Console_Cls(short x, short y);
+//void Console_Cls(COORD c);
 void Game();
 void Check();
 void Draw();

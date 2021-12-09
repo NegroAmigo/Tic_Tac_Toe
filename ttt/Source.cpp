@@ -1,6 +1,4 @@
-﻿// tic_tac_toe.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-#include "Header.h"
+﻿#include "Header.h"
 #include <conio.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -22,21 +20,95 @@ int winner = 0;
 int x;
 int turn_counter = 0;
 int mode;
+void Menu_after_game() 
+{
+	SetConsoleCursorPosition(hout, { 0,0});
+	cout << "Press 1 for restart.\nPress 2 for exit to menu.\nPress 3 to close game.";
+	int x = _getch();
+	cout << x;
+	if (x == 49)
+	{
+		
+		Draw();
+		Game();
+	}
+	if (x == 50)
+	{
+		Console_Cls(33,7);
+		Menu();
+	}
+	if (x == 51)
+	{
+		Console_Cls(0, 0);
+		exit(0);
+	}
+}
 
-void Menu() {
+void Game_Clean()
+{
+	curX = 0;
+	curY = 0;
+	turn_counter = 0;
+	winner = 0;
+	for (int i=0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			game[i][j] = 0;
+		}
+	}
+}
+
+void Console_Cls(short x, short y)
+{
+	SetConsoleCursorPosition(hout, {x,y});
+	system("cls");
+}
+
+void Console_Cls(COORD c)
+{
+	SetConsoleCursorPosition(hout, c);
+	system("cls");
+}
+
+void Menu() 
+{
+	Console_Cls(33, 7);
 	cout << "Press 1 for play with computer.\nPress 2 for game with player.\nPress 3 for exit.";
-	while (true) {
-		x = _getch();
-		if (x == 49) mode = 0;
-		else if (x == 50) mode = 1;
-		else if (x == 51) exit(0);
-		else if (x == 102) { SetConsoleCursorPosition(hout, { 50,10 });  cout << "RESPECT\n\n\n\n\n\n\n"; exit(0); }
-		system("cls");
+	x = _getch();
+	if (x == 49)
+	{
+		mode = 0;
+		
+		Console_Cls(c);
+		Create_field();
+		
+		Game();
+	}
+	else if (x == 50)
+	{
+		mode = 1;
+
+		Console_Cls(c);
 		Create_field();
 		ci.bVisible = true;
 		SetConsoleCursorInfo(hout, &ci);
 		Game();
 	}
+
+	else if (x == 51)
+	{
+		Console_Cls(0, 0);
+		exit(0);
+	}
+	else if (x == 102)
+	{
+		SetConsoleCursorPosition(hout, { 50,10 });
+		cout << "RESPECT\n\n\n\n\n\n\n";
+		system("pause");
+		Menu();
+	}
+
 }
 
 void Bot_turn(int priority) 
@@ -188,15 +260,19 @@ void Player_turn()
 
 void Game() 
 {
+	ci.bVisible = true;
+	SetConsoleCursorInfo(hout, &ci);
+	Game_Clean();
 	SetConsoleCursorPosition(hout, { 35,9 });
 	flag = true;
-	int x = _getch();
+	x = _getch();
 	while (flag) 
 	{
 		Player_turn();
 		Check();
 		if (flag == 0) break;
-		if (mode == 0) {
+		if (mode == 0) 
+		{
 			Bot_turn(2);
 			Check();
 		}	
@@ -209,6 +285,10 @@ void Game()
 		SetConsoleCursorPosition(hout, inf_out);
 		if(mode==0) cout << "Player win!";
 		if (mode == 1) cout << "Player 1 win!";
+		ci.bVisible = false;
+		SetConsoleCursorInfo(hout, &ci);
+		Menu_after_game();
+		return;
 	}
 	else if (winner == 2) {
 		SetConsoleCursorPosition(hout, { 33, 6 });
@@ -216,10 +296,24 @@ void Game()
 		SetConsoleCursorPosition(hout, inf_out);
 		if (mode == 0) cout << "Computer win!";
 		if (mode == 1) cout << "Player 2 win!";
+		ci.bVisible = false;
+		SetConsoleCursorInfo(hout, &ci);
+		Menu_after_game();
+		return;
 	}
-	else cout << "Tie!";
-	ci.bVisible = false;
-	SetConsoleCursorInfo(hout, &ci);
+	else
+	{
+		SetConsoleCursorPosition(hout, inf_out);
+		cout << "Tie!";
+		ci.bVisible = false;
+		SetConsoleCursorInfo(hout, &ci);
+		x = _getch();
+		
+		Menu();
+		return;
+	}
+		
+	
 }
 
 void Check() 
@@ -281,6 +375,9 @@ void Check()
 
 void Draw() 
 {
+	Console_Cls(0, 0);
+	c.X = 33;
+	c.Y = 7;
 	for (int i = 0; i < 13; i++) 
 	{
 		SetConsoleCursorPosition(hout, c);
@@ -293,7 +390,6 @@ void Draw()
 
 void Create_field() 
 {
-	
 	SetConsoleCursorPosition(hout, c);
 	for (int i = 0; i < 13; i++)
 	{
@@ -328,6 +424,6 @@ int main()
 	Menu();
 	
 	cout << "\n\n" << endl;
-	system("pause");
+	exit(0);
 	return 0;
 }
