@@ -4,8 +4,8 @@
 #include <Windows.h>
 #include <iostream>
 using namespace std;
-CONSOLE_CURSOR_INFO ci;
-COORD c = { 30,7 };
+CONSOLE_CURSOR_INFO ci1;
+COORD c1 = { 30,7 };
 
 void Zapoj(int arr[5][5])
 {
@@ -30,13 +30,13 @@ void Letter_Draw(int arr[5][5])
     }
 }
 
-int main(int argv, char** argc)
+int main_draw_menu(int argv, char** argc)
 {
     HANDLE hout;
     hout = GetStdHandle(STD_OUTPUT_HANDLE);
-    ci.dwSize = 100;
-    ci.bVisible = false;
-    SetConsoleCursorInfo(hout, &ci);
+    ci1.dwSize = 100;
+    ci1.bVisible = false;
+    SetConsoleCursorInfo(hout, &ci1);
     DWORD r = 0;
     int arr[11][46] = { 0 };
 
@@ -203,17 +203,17 @@ int main(int argv, char** argc)
      cout << endl;
      Letter_Draw(arrS);
      cout << endl;*/
-    SetConsoleCursorPosition(hout, c);
+    SetConsoleCursorPosition(hout, c1);
     for (int i = 0; i < 11; i++)
     {
-        SetConsoleCursorPosition(hout, c);
+        SetConsoleCursorPosition(hout, c1);
         for (int j = 0; j < 46; j++)
         {
             cout << (char)arr[i][j];
         }
-        c.Y++;
+        c1.Y++;
     }
     //SetConsoleTextAttribute(hout, FOREGROUND_RED);
 
-
+    return 0;
 }
