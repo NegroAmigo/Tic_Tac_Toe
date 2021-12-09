@@ -25,7 +25,6 @@ void Menu_after_game()
 	SetConsoleCursorPosition(hout, { 0,0});
 	cout << "Press 1 for restart.\nPress 2 for exit to menu.\nPress 3 to close game.";
 	int x = _getch();
-	cout << x;
 	if (x == 49)
 	{
 		
@@ -42,6 +41,7 @@ void Menu_after_game()
 		Console_Cls(0, 0);
 		exit(0);
 	}
+	else Menu_after_game();
 }
 
 void Game_Clean()
@@ -307,9 +307,7 @@ void Game()
 		cout << "Tie!";
 		ci.bVisible = false;
 		SetConsoleCursorInfo(hout, &ci);
-		x = _getch();
-		
-		Menu();
+		Menu_after_game();
 		return;
 	}
 		
