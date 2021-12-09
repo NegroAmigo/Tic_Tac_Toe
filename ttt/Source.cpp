@@ -1,6 +1,4 @@
-﻿// tic_tac_toe.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-#include "Header.h"
+﻿#include "Header.h"
 #include <conio.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,39 +8,25 @@
 using namespace std;
 
 HANDLE hout;
+int q;
+short k = 20;
 COORD c = { 33,7 };
 COORD inf_out = { 0,21 };
 CONSOLE_CURSOR_INFO ci;
 int field[13][13];
-int game[3][3] = {0};
+int game[3][3] = { 0 };
 int curX = 0;
 int curY = 0;
 bool flag;
 int winner = 0;
 int x;
 int turn_counter = 0;
-int mode;
+int turn_counter_p = 0;
 
-void Menu() {
-	cout << "Press 1 for play with computer.\nPress 2 for game with player.\nPress 3 for exit.";
-	while (true) {
-		x = _getch();
-		if (x == 49) mode = 0;
-		else if (x == 50) mode = 1;
-		else if (x == 51) exit(0);
-		else if (x == 102) { SetConsoleCursorPosition(hout, { 50,10 });  cout << "RESPECT\n\n\n\n\n\n\n"; exit(0); }
-		system("cls");
-		Create_field();
-		ci.bVisible = true;
-		SetConsoleCursorInfo(hout, &ci);
-		Game();
-	}
-}
-
-void Bot_turn(int priority) 
+void Bot_turn(int priority)
 {
-	COORD move[3][3] = {{{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}}};
-	if (game[1][1] == 0) 
+	COORD move[3][3] = { {{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}} };
+	if (game[1][1] == 0)
 	{
 		game[1][1] = 2;
 		SetConsoleCursorPosition(hout, move[1][1]);
@@ -50,12 +34,12 @@ void Bot_turn(int priority)
 		turn_counter++;
 		return;
 	}
-	for (int i = 0; i < 3; i++) 
+	for (int i = 0; i < 3; i++)
 	{
 		if ((game[0][i] == priority && game[1][i] == priority) || (game[1][i] == priority && game[2][i] == priority) || (game[0][i] == priority && game[2][i] == priority)) {
-			for (int j = 0; j < 3; j++) 
+			for (int j = 0; j < 3; j++)
 			{
-				if (game[j][i] == 0) 
+				if (game[j][i] == 0)
 				{
 					game[j][i] = 2;
 					SetConsoleCursorPosition(hout, move[j][i]);
@@ -66,13 +50,13 @@ void Bot_turn(int priority)
 			}
 		}
 	}
-	for (int i = 0; i < 3; i++) 
+	for (int i = 0; i < 3; i++)
 	{
-		if ((game[i][0] == priority && game[i][1] == priority) || (game[i][1] == priority && game[i][2] == priority) || (game[i][0] == priority && game[i][2] == priority)) 
+		if ((game[i][0] == priority && game[i][1] == priority) || (game[i][1] == priority && game[i][2] == priority) || (game[i][0] == priority && game[i][2] == priority))
 		{
-			for (int j = 0; j < 3; j++) 
+			for (int j = 0; j < 3; j++)
 			{
-				if (game[i][j] == 0) 
+				if (game[i][j] == 0)
 				{
 					game[i][j] = 2;
 					SetConsoleCursorPosition(hout, move[i][j]);
@@ -83,11 +67,11 @@ void Bot_turn(int priority)
 			}
 		}
 	}
-	if ((game[0][0] == priority && game[1][1] == priority) || (game[1][1] == priority && game[2][2] == priority) || (game[0][0] == priority && game[2][2] == priority)) 
+	if ((game[0][0] == priority && game[1][1] == priority) || (game[1][1] == priority && game[2][2] == priority) || (game[0][0] == priority && game[2][2] == priority))
 	{
-		for (int j = 0; j < 3; j++) 
+		for (int j = 0; j < 3; j++)
 		{
-			if (game[j][j] == 0) 
+			if (game[j][j] == 0)
 			{
 				game[j][j] = 2;
 				SetConsoleCursorPosition(hout, move[j][j]);
@@ -97,11 +81,11 @@ void Bot_turn(int priority)
 			}
 		}
 	}
-	if ((game[2][0] == priority && game[1][1] == priority) || (game[1][1] == priority && game[0][2] == priority) || (game[0][2] == priority && game[2][0] == priority)) 
+	if ((game[2][0] == priority && game[1][1] == priority) || (game[1][1] == priority && game[0][2] == priority) || (game[0][2] == priority && game[2][0] == priority))
 	{
-		for (int j = 0; j < 3; j++) 
+		for (int j = 0; j < 3; j++)
 		{
-			if (game[j][2 - j] == 0) 
+			if (game[j][2 - j] == 0)
 			{
 				game[j][2 - j] = 2;
 				SetConsoleCursorPosition(hout, move[j][2 - j]);
@@ -127,16 +111,17 @@ void Bot_turn(int priority)
 				}
 			}
 	}
-}	
+}
 
-void Player_turn() 
+
+void Player_turn()
 {
 	COORD move[3][3] = { {{35,9}, {39,9}, {43,9}}, {{35,13}, {39,13}, {43,13}}, {{35,17}, {39,17}, {43,17}} };
-	while (true) 
+	while (true)
 	{
 		SetConsoleCursorPosition(hout, move[curX][curY]);
 		x = _getch();
-		switch (x) 
+		switch (x)
 		{
 		case 75:
 			if (curY - 1 >= 0 && curY - 1 <= 2) curY--;
@@ -153,32 +138,31 @@ void Player_turn()
 		case 32:
 			if (game[curX][curY] != 0)
 			{
-				SetConsoleCursorPosition(hout, inf_out);
+				SetConsoleCursorPosition(hout, { 0,++k });
 				cout << "Wrong move!";
 			}
-			else if (mode == 1) {
-				if (turn_counter % 2 == 0) {
+			else if (q == 2)
+			{
+				if (turn_counter_p == 1)
+				{
 					cout << "X";
 					game[curX][curY] = 1;
-					turn_counter++;
-					SetConsoleCursorPosition(hout, { 33, 6 });
-					cout << "Move 2 player";
-					return;
+					turn_counter_p++;
+					Check();
 				}
-				else if (turn_counter % 2 != 0) {
+				else if (turn_counter_p == 2) {
 					cout << "O";
 					game[curX][curY] = 2;
-					turn_counter++;
-					SetConsoleCursorPosition(hout, { 33, 6 });
-					cout << "Move 1 player";
-					return;
+					turn_counter_p--;
+					Check();
 				}
+				return;
 			}
-			else
-			{
+			else {
 				cout << "X";
 				game[curX][curY] = 1;
 				turn_counter++;
+				Check();
 				return;
 			}
 			break;
@@ -186,49 +170,53 @@ void Player_turn()
 	}
 }
 
-void Game() 
+void Game()
 {
 	SetConsoleCursorPosition(hout, { 35,9 });
 	flag = true;
 	int x = _getch();
-	while (flag) 
+	while (flag)
 	{
 		Player_turn();
 		Check();
 		if (flag == 0) break;
-		if (mode == 0) {
-			Bot_turn(2);
-			Check();
-		}	
+		Bot_turn(2);
+		Check();
 	}
-	SetConsoleCursorPosition(hout, inf_out);
-	cout << "                ";
-	if (winner == 1) {
-		SetConsoleCursorPosition(hout, { 33, 6 });
-		cout << "                ";
-		SetConsoleCursorPosition(hout, inf_out);
-		if(mode==0) cout << "Player win!";
-		if (mode == 1) cout << "Player 1 win!";
-	}
-	else if (winner == 2) {
-		SetConsoleCursorPosition(hout, { 33, 6 });
-		cout << "                ";
-		SetConsoleCursorPosition(hout, inf_out);
-		if (mode == 0) cout << "Computer win!";
-		if (mode == 1) cout << "Player 2 win!";
-	}
+	SetConsoleCursorPosition(hout, { 0,++k });
+	if (winner == 1) cout << "Player win!";
+	else if (winner == 2) cout << "Computer win!";
 	else cout << "Tie!";
 	ci.bVisible = false;
 	SetConsoleCursorInfo(hout, &ci);
 }
 
-void Check() 
+void Game_PvP()
 {
-	for (int i = 0; i < 3; i++) 
+	SetConsoleCursorPosition(hout, { 35,9 });
+	flag = true;
+	int x = _getch();
+	while (flag)
 	{
-		if (game[0][i] == game[1][i] && game[1][i] == game[2][i]) 
+		Player_turn();
+		Check();
+		if (flag == 0) break;
+	}
+	SetConsoleCursorPosition(hout, { 0,++k });
+	if (winner == 1) cout << "Player 1 win!";
+	else if (winner == 2) cout << "Player 2 win!";
+	else cout << "Tie!";
+	ci.bVisible = false;
+	SetConsoleCursorInfo(hout, &ci);
+}
+
+void Check()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		if (game[0][i] == game[1][i] && game[1][i] == game[2][i])
 		{
-			if (game[0][i] != 0 && game[1][i] != 0 && game[2][i] != 0) 
+			if (game[0][i] != 0 && game[1][i] != 0 && game[2][i] != 0)
 			{
 				if (game[0][i] == 1) winner = 1;
 				else if (game[0][i] == 2) winner = 2;
@@ -237,11 +225,11 @@ void Check()
 			}
 		}
 	}
-	for (int i = 0; i < 3; i++) 
+	for (int i = 0; i < 3; i++)
 	{
-		if (game[i][0] == game[i][1] && game[i][1] == game[i][2]) 
+		if (game[i][0] == game[i][1] && game[i][1] == game[i][2])
 		{
-			if (game[i][0] != 0 && game[i][1] != 0 && game[i][2] != 0) 
+			if (game[i][0] != 0 && game[i][1] != 0 && game[i][2] != 0)
 			{
 				if (game[i][0] == 1) winner = 1;
 				else if (game[i][0] == 2) winner = 2;
@@ -252,12 +240,12 @@ void Check()
 	}
 	if (game[0][0] == game[1][1] && game[1][1] == game[2][2]) //диагональ слева на право
 	{
-		if (game[0][0] == 1) 
+		if (game[0][0] == 1)
 		{
 			winner = 1;
 			flag = 0;
 		}
-		else if (game[0][0] == 2) 
+		else if (game[0][0] == 2)
 		{
 			winner = 2;
 			flag = 0;
@@ -265,12 +253,12 @@ void Check()
 	}
 	if (game[2][0] == game[1][1] && game[1][1] == game[0][2]) //диагональ справа на лево
 	{
-		if (game[2][0] == 1) 
+		if (game[2][0] == 1)
 		{
 			winner = 1;
 			flag = 0;
 		}
-		else if (game[2][0] == 2) 
+		else if (game[2][0] == 2)
 		{
 			winner = 2;
 			flag = 0;
@@ -279,9 +267,9 @@ void Check()
 	if (turn_counter == 9) flag = 0;
 }
 
-void Draw() 
+void Draw()
 {
-	for (int i = 0; i < 13; i++) 
+	for (int i = 0; i < 13; i++)
 	{
 		SetConsoleCursorPosition(hout, c);
 		for (int j = 0; j < 13; j++) {
@@ -291,13 +279,11 @@ void Draw()
 	}
 }
 
-void Create_field() 
+void Create_field()
 {
-	
-	SetConsoleCursorPosition(hout, c);
 	for (int i = 0; i < 13; i++)
 	{
-		for (int j = 0; j < 13; j++) 
+		for (int j = 0; j < 13; j++)
 		{
 			if (i == 0 && j % 4 == 0) field[i][j] = 203; // ╦
 			else if (i == 12 && j % 4 == 0) field[i][j] = 202; // ╩
@@ -309,7 +295,7 @@ void Create_field()
 			else if (i % 4 != 0 && j % 4 != 0) field[i][j] = 255; //space
 		}
 	}
-		
+
 	field[0][0] = 201; // ╔
 	field[0][12] = 187; // ╗
 	field[12][0] = 200; // ╚
@@ -317,17 +303,28 @@ void Create_field()
 	Draw();
 }
 
-int main() 
+int main()
 {
+
 	hout = GetStdHandle(STD_OUTPUT_HANDLE);
 	ci.dwSize = 100;
-	ci.bVisible = false;
+	ci.bVisible = true;
 	SetConsoleCursorInfo(hout, &ci);
-	
-	
-	Menu();
-	
+	SetConsoleCursorPosition(hout, c);
+	Create_field();
+
+	SetConsoleCursorPosition(hout, { 0,++k });
+	cout << "Input num of players(1/2): ";
+	cin >> q;
+	if (q == 1)
+	{
+		Game();
+	}
+	else if (q == 2)
+	{
+		turn_counter_p = 1;
+		Game_PvP();
+	}
 	cout << "\n\n" << endl;
 	system("pause");
-	return 0;
 }
