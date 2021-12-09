@@ -381,7 +381,7 @@ void Draw()
 		SetConsoleCursorPosition(hout, c);
 		for (int j = 0; j < 13; j++) {
 			cout << (char)field[i][j];
-		}x
+		}
 		c.Y++;
 	}
 }
