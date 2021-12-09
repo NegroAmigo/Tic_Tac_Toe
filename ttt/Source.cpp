@@ -8,13 +8,14 @@
 using namespace std;
 
 HANDLE hout;
-int q;
+int mode;
+int request;
 short k = 20;
 COORD c = { 33,7 };
 COORD inf_out = { 0,21 };
 CONSOLE_CURSOR_INFO ci;
 int field[13][13];
-int game[3][3] = { 0 };
+int game[3][3] = {0};
 int curX = 0;
 int curY = 0;
 bool flag;
@@ -141,7 +142,7 @@ void Player_turn()
 				SetConsoleCursorPosition(hout, { 0,++k });
 				cout << "Wrong move!";
 			}
-			else if (q == 2)
+			else if (mode == 2)
 			{
 				if (turn_counter_p == 1)
 				{
@@ -187,8 +188,33 @@ void Game()
 	if (winner == 1) cout << "Player win!";
 	else if (winner == 2) cout << "Computer win!";
 	else cout << "Tie!";
-	ci.bVisible = false;
+	ci.bVisible = true;
 	SetConsoleCursorInfo(hout, &ci);
+	SetConsoleCursorPosition(hout, { 0,++k });
+	cout << "Restart?(1-yes/0-no)";
+	cin >> request;
+	if (request == 1) 
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				game[i][j] = 0;
+			}
+		}
+	
+		SetConsoleCursorPosition(hout, {33,7});
+		system("cls");
+		Create_field();
+		turn_counter = 0;
+		turn_counter_p = 0;
+		winner = 0;
+		loop();
+	}
+	else if (request == 0)
+	{
+		return;
+	}
 }
 
 void Game_PvP()
@@ -208,6 +234,48 @@ void Game_PvP()
 	else cout << "Tie!";
 	ci.bVisible = false;
 	SetConsoleCursorInfo(hout, &ci);
+	SetConsoleCursorPosition(hout, { 0,++k });
+	cout << "Restart?(1-yes/0-no)";
+	cin >> request;
+	if (request == 1)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				game[i][j] = 0;
+			}
+		}
+
+		SetConsoleCursorPosition(hout, { 33,7 });
+		system("cls");
+		Create_field();
+		turn_counter = 0;
+		turn_counter_p = 0;
+		winner = 0;
+		loop();
+	}
+	else if (request == 0)
+	{
+		return;
+	}
+}
+
+void loop()
+{
+	k = 20;
+	SetConsoleCursorPosition(hout, { 0,++k });
+	cout << "Input num of players(1/2): ";
+	cin >> mode;
+	if (mode == 1)
+	{
+		Game();
+	}
+	else if (mode == 2)
+	{
+		turn_counter_p = 1;
+		Game_PvP();
+	}
 }
 
 void Check()
@@ -269,6 +337,7 @@ void Check()
 
 void Draw()
 {
+	c = {33,7};
 	for (int i = 0; i < 13; i++)
 	{
 		SetConsoleCursorPosition(hout, c);
@@ -312,19 +381,8 @@ int main()
 	SetConsoleCursorInfo(hout, &ci);
 	SetConsoleCursorPosition(hout, c);
 	Create_field();
-
-	SetConsoleCursorPosition(hout, { 0,++k });
-	cout << "Input num of players(1/2): ";
-	cin >> q;
-	if (q == 1)
-	{
-		Game();
-	}
-	else if (q == 2)
-	{
-		turn_counter_p = 1;
-		Game_PvP();
-	}
+	loop();
+	
 	cout << "\n\n" << endl;
 	system("pause");
 }
