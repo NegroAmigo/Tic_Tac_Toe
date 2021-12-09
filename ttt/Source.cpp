@@ -69,7 +69,7 @@ void Console_Cls(COORD c)
 {
 	SetConsoleCursorPosition(hout, c);
 	system("cls");
-}
+} 
 
 void Menu() 
 {
@@ -381,7 +381,7 @@ void Draw()
 		SetConsoleCursorPosition(hout, c);
 		for (int j = 0; j < 13; j++) {
 			cout << (char)field[i][j];
-		}
+		}x
 		c.Y++;
 	}
 }
