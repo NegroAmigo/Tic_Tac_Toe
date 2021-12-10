@@ -6,7 +6,7 @@
 using namespace std;
 CONSOLE_CURSOR_INFO ci1;
 COORD c1 = { 30,7 };
-HANDLE hout_menu_menu;
+HANDLE hout_menu;
 DWORD r = 0;
 int arrLetter[5][5];
 int arr[11][46] = { 0 };
