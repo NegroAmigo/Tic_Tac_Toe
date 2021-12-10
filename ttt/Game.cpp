@@ -423,6 +423,7 @@ int main()
 	main_draw_menu();
 	
 	cout << "\n\n" << endl;
+	SetConsoleCursorPosition(hout, { 30, 20 });
 	exit(0);
 	return 0;
 }

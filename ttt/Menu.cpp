@@ -5,11 +5,15 @@
 #include <iostream>
 using namespace std;
 CONSOLE_CURSOR_INFO ci1;
-COORD c1 = { 30,7 };
+COORD c1 = { 38,4 };
+COORD c_letters = { c1.X,c1.Y };
+int sleep_time = 15;
+
 HANDLE hout_menu;
 DWORD r = 0;
 int arrLetter[5][5];
 int arr[11][46] = { 0 };
+int counter = 0;
 
 void Zapoj(int arr[5][5])
 {
@@ -24,19 +28,21 @@ void Zapoj(int arr[5][5])
 
 void Letter_Draw(int arr[5][5])
 {
+    COORD c_tmp = c_letters;
     for (int i = 0; i < 5; i++)
     {
+        SetConsoleCursorPosition(hout_menu, c_tmp);
         for (int j = 0; j < 5; j++)
         {
             cout << (char)arr[i][j];
+            Sleep(sleep_time-5);
         }
-        cout << endl;
-    }
+        c_tmp.Y++;
+    } 
 }
 
 void letter_T(int arrLetter[5][5])
 {
-    
     Zapoj(arrLetter);
     for (int i = 0; i < 5; i++)
     {
@@ -46,6 +52,8 @@ void letter_T(int arrLetter[5][5])
             if (j == 2 && i != 0) arrLetter[i][j] = 219;
         }
     }
+    if (counter == 0) counter = 1;
+    else if (counter == 1) c_letters.X += 7;
     Letter_Draw(arrLetter);
 }
 
@@ -60,6 +68,7 @@ void letter_E(int arrLetter[5][5])
             if (j == 0 && i != 0) arrLetter[i][j] = 219;
         }
     }
+    c_letters.X += 7;
     Letter_Draw(arrLetter);
 }
 
@@ -76,6 +85,8 @@ void letter_R(int arrLetter[5][5])
             if (i != 0 && i == 2 && j != 0 && j != 4) arrLetter[i][j] = 220;
         }
     }
+    arrLetter[3][3] = 219;
+    c_letters.X += 7;
     Letter_Draw(arrLetter);
 }
 
@@ -90,6 +101,7 @@ void letter_I(int arrLetter[5][5])
             if (j == 2 && i != 0) arrLetter[i][j] = 219;
         }
     }
+    c_letters.X += 7;
     Letter_Draw(arrLetter);
 }
 
@@ -106,6 +118,7 @@ void letter_S(int arrLetter[5][5])
             if (i == 4 && j != 4) arrLetter[i][j] = 220;
         }
     }
+    c_letters.X += 7;
     Letter_Draw(arrLetter);
 }
 
@@ -122,17 +135,34 @@ void Draw_Frame()
 
         }
     }
-
-    SetConsoleCursorPosition(hout_menu, c1);
+    COORD c_tmp = c1;
+    SetConsoleCursorPosition(hout_menu, c_tmp);
     for (int i = 0; i < 11; i++)
     {
-        SetConsoleCursorPosition(hout_menu, c1);
+        SetConsoleCursorPosition(hout_menu, c_tmp);
         for (int j = 0; j < 46; j++)
         {
-            cout << (char)arr[i][j];
+            if (i == 0 || i == 10 || j == 0 || j == 45)
+            {
+                cout << (char)arr[i][j];
+                Sleep(sleep_time);
+            }
+            else cout << (char)arr[i][j];
         }
-        c1.Y++;
+        c_tmp.Y++;
     }
+    c_letters.Y += 2;
+    c_letters.X += 3;
+    letter_T(arrLetter);
+    letter_E(arrLetter);
+    letter_T(arrLetter);
+    letter_R(arrLetter);
+    letter_I(arrLetter);
+    letter_S(arrLetter);
+    c1.X += 15;
+    c1.Y += 8;
+    SetConsoleCursorPosition(hout_menu, c1);
+    cout << "by Blue Warriors";
 }
 
 int main_draw_menu()
@@ -143,6 +173,9 @@ int main_draw_menu()
     SetConsoleCursorInfo(hout_menu, &ci1);
     
     Draw_Frame();
+
+
+    
 
     //░ - 176
     // 
@@ -196,6 +229,6 @@ int main_draw_menu()
     //    ▀ - 223
 
    
-
+    
     return 0;
 }
