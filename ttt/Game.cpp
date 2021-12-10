@@ -419,7 +419,8 @@ int main()
 	SetConsoleCursorInfo(hout, &ci);
 	
 	
-	Menu();
+	//Menu();
+	main_draw_menu();
 	
 	cout << "\n\n" << endl;
 	exit(0);

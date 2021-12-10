@@ -6,6 +6,10 @@
 using namespace std;
 CONSOLE_CURSOR_INFO ci1;
 COORD c1 = { 30,7 };
+HANDLE hout_menu_menu;
+DWORD r = 0;
+int arrLetter[5][5];
+int arr[11][46] = { 0 };
 
 void Zapoj(int arr[5][5])
 {
@@ -30,15 +34,115 @@ void Letter_Draw(int arr[5][5])
     }
 }
 
-int main_draw_menu(int argv, char** argc)
+void letter_T(int arrLetter[5][5])
 {
-    HANDLE hout;
-    hout = GetStdHandle(STD_OUTPUT_HANDLE);
+    
+    Zapoj(arrLetter);
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if (i == 0) arrLetter[i][j] = 220;
+            if (j == 2 && i != 0) arrLetter[i][j] = 219;
+        }
+    }
+    Letter_Draw(arrLetter);
+}
+
+void letter_E(int arrLetter[5][5])
+{
+    Zapoj(arrLetter);
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if (i % 2 == 0) arrLetter[i][j] = 220;
+            if (j == 0 && i != 0) arrLetter[i][j] = 219;
+        }
+    }
+    Letter_Draw(arrLetter);
+}
+
+void letter_R(int arrLetter[5][5])
+{
+    Zapoj(arrLetter);
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if (j == 0 && i != 0) arrLetter[i][j] = 219;
+            if (i == 0) arrLetter[i][j] = 220;
+            if (j == 4 && i != 0 && i != 3) arrLetter[i][j] = 219;
+            if (i != 0 && i == 2 && j != 0 && j != 4) arrLetter[i][j] = 220;
+        }
+    }
+    Letter_Draw(arrLetter);
+}
+
+void letter_I(int arrLetter[5][5])
+{
+    Zapoj(arrLetter);
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if (i == 0 || i == 4) arrLetter[i][j] = 220;
+            if (j == 2 && i != 0) arrLetter[i][j] = 219;
+        }
+    }
+    Letter_Draw(arrLetter);
+}
+
+void letter_S(int arrLetter[5][5])
+{
+    Zapoj(arrLetter);
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if ((j == 0 && (i == 1 || i == 2)) || (j == 4 && (i == 3 || i == 4))) arrLetter[i][j] = 219;
+            if (i == 0) arrLetter[i][j] = 220;
+            if (i == 2 && j != 0) arrLetter[i][j] = 220;
+            if (i == 4 && j != 4) arrLetter[i][j] = 220;
+        }
+    }
+    Letter_Draw(arrLetter);
+}
+
+void Draw_Frame()
+{
+    for (int i = 0; i < 11; i++)
+    {
+        for (int j = 0; j < 46; j++)
+        {
+            if (j == 0 || j == 45) arr[i][j] = 219;
+            if (i == 0) arr[i][j] = 220;
+            if (i == 10) arr[i][j] = 223;
+            if (i != 0 && i != 10 && j != 0 && j != 45) arr[i][j] = 255;
+
+        }
+    }
+
+    SetConsoleCursorPosition(hout_menu, c1);
+    for (int i = 0; i < 11; i++)
+    {
+        SetConsoleCursorPosition(hout_menu, c1);
+        for (int j = 0; j < 46; j++)
+        {
+            cout << (char)arr[i][j];
+        }
+        c1.Y++;
+    }
+}
+
+int main_draw_menu()
+{
+    hout_menu = GetStdHandle(STD_OUTPUT_HANDLE);
     ci1.dwSize = 100;
     ci1.bVisible = false;
-    SetConsoleCursorInfo(hout, &ci1);
-    DWORD r = 0;
-    int arr[11][46] = { 0 };
+    SetConsoleCursorInfo(hout_menu, &ci1);
+    
+    Draw_Frame();
 
     //░ - 176
     // 
@@ -91,129 +195,7 @@ int main_draw_menu(int argv, char** argc)
     //    ▐ - 222
     //    ▀ - 223
 
-    /*for (int i = 0; i < 256; i++)
-    {
-        cout << (char)i << " - " << i << endl;
-    }*/
-
-    int arrT[5][5] = { 219 };
-    Zapoj(arrT);
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 5; j++)
-        {
-            if (i == 0) arrT[i][j] = 220;
-            if (j == 2 && i != 0) arrT[i][j] = 219;
-        }
-    }
-    //Letter_Draw(arrT);
-
-    int arrE[5][5];
-    Zapoj(arrE);
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 5; j++)
-        {
-            if (i % 2 == 0) arrE[i][j] = 220;
-            if (j == 0 && i != 0) arrE[i][j] = 219;
-        }
-    }
-    /* for (int i = 0; i < 5; i++)
-     {
-         for (int j = 0; j < 5; j++)
-         {
-             cout << arrE[i][j] << '\t';
-         }
-         cout << '\n';
-     }*/
-     //Letter_Draw(arrE);
-
-    cout << '\n';
-    int arrR[5][5];
-    Zapoj(arrR);
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 5; j++)
-        {
-            if (j == 0 && i != 0) arrR[i][j] = 219;
-            if (i == 0) arrR[i][j] = 220;
-            if (j == 4 && i != 0 && i != 3) arrR[i][j] = 219;
-            if (i != 0 && i == 2 && j != 0 && j != 4) arrR[i][j] = 220;
-        }
-    }
-    arrR[3][3] = 219;
-    //Letter_Draw(arrR);
-
-    int arrI[5][5];
-    Zapoj(arrI);
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 5; j++)
-        {
-            if (i == 0 || i == 4) arrI[i][j] = 220;
-            if (j == 2 && i != 0) arrI[i][j] = 219;
-        }
-    }
-    //Letter_Draw(arrI);
-
-    int arrS[5][5];
-    Zapoj(arrS);
-    for (int i = 0; i < 5; i++)
-    {
-        for (int j = 0; j < 5; j++)
-        {
-            if ((j == 0 && (i == 1 || i == 2)) || (j == 4 && (i == 3 || i == 4))) arrS[i][j] = 219;
-            if (i == 0) arrS[i][j] = 220;
-            if (i == 2 && j != 0) arrS[i][j] = 220;
-            if (i == 4 && j != 4) arrS[i][j] = 220;
-        }
-    }
-    //Letter_Draw(arrS);
-
-
-
-
-
-    for (int i = 0; i < 11; i++)
-    {
-        for (int j = 0; j < 46; j++)
-        {
-            if (j == 0 || j == 45) arr[i][j] = 219;
-            if (i == 0) arr[i][j] = 220;
-            if (i == 10) arr[i][j] = 223;
-            if (i != 0 && i != 10 && j != 0 && j != 45) arr[i][j] = 255;
-
-        }
-    }
-
-
-
-
-
-
-    /* Letter_Draw(arrT);
-     cout << endl;
-     Letter_Draw(arrE);
-     cout << endl;
-     Letter_Draw(arrT);
-     cout << endl;
-     Letter_Draw(arrR);
-     cout << endl;
-     Letter_Draw(arrI);
-     cout << endl;
-     Letter_Draw(arrS);
-     cout << endl;*/
-    SetConsoleCursorPosition(hout, c1);
-    for (int i = 0; i < 11; i++)
-    {
-        SetConsoleCursorPosition(hout, c1);
-        for (int j = 0; j < 46; j++)
-        {
-            cout << (char)arr[i][j];
-        }
-        c1.Y++;
-    }
-    //SetConsoleTextAttribute(hout, FOREGROUND_RED);
+   
 
     return 0;
 }
